@@ -6,26 +6,27 @@ namespace iamntz\elementor_query_utils;
 class WooCommerceArchive
 {
     protected $widget;
+    protected $filterPriority = 99;
 
     public function __construct()
     {
         add_action('elementor/widget/before_render_content', [$this, '_beforeRender']);
     }
 
-    function _beforeRender($instance)
+    function _beforeRender($widget)
     {
-        if ($instance->get_name() !== 'woocommerce-products') {
+        if ($widget->get_name() !== 'woocommerce-products') {
             return;
         }
 
-        $this->widget = $instance;
+        $this->widget = $widget;
 
-        add_filter('woocommerce_shortcode_products_query', [$this, '_wooQuery'], 99, 3);
+        add_filter('woocommerce_shortcode_products_query', [$this, '_wooQuery'], $this->filterPriority, 3);
     }
 
     public function _wooQuery($args, $attrs, $type)
     {
-        remove_filter('woocommerce_shortcode_products_query', [$this, '_wooQuery'], 99);
+        remove_filter('woocommerce_shortcode_products_query', [$this, '_wooQuery'], $this->filterPriority);
 
         $args = query($args, $this->widget);
 
