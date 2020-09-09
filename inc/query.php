@@ -11,6 +11,8 @@ function query($query, $widget)
             continue;
         }
 
+        $meta['value'] = apply_filters('iamntz/elementor/query/meta-query-value', $meta['value'], $meta, $query, $widget);
+
         if ($meta['value_is_array'] === 'is_array') {
             $value = array_map('trim', explode(",", $meta['value']));
             if (in_array($meta['type'], ['DECIMAL'])) {
@@ -20,13 +22,14 @@ function query($query, $widget)
             $value = $meta['value'];
         }
 
-
-        $metaQuery[] = apply_filters('iamntz/elementor/query/meta-query', [
+        $q = apply_filters('iamntz/elementor/query/meta-query', [
             'key' => $meta['key'],
             'value' => $value,
             'compare' => $meta['compare'],
             'type' => $meta['type'],
         ], $meta, $query, $widget);
+
+        $metaQuery[] = $q;
     }
 
     if (!empty($metaQuery)) {
