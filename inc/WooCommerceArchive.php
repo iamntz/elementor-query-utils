@@ -13,7 +13,7 @@ class WooCommerceArchive
         add_action('elementor/widget/before_render_content', [$this, '_beforeRender']);
     }
 
-    function _beforeRender($widget)
+    public function _beforeRender($widget)
     {
         if ($widget->get_name() !== 'woocommerce-products') {
             return;
