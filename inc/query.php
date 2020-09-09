@@ -30,7 +30,14 @@ function query($query, $widget)
     }
 
     if (!empty($metaQuery)) {
-        $metaQuery['relation'] = $widget->get_settings('meta_query_relation');
+        if (count($metaQuery) > 1) {
+            $metaQuery['relation'] = $widget->get_settings('meta_query_relation');
+        }
+
+        if (count($metaQuery) === 1) {
+            $metaQuery = $metaQuery[0];
+        }
+
         $query['meta_query'][] = apply_filters('iamntz/elementor/query/all-meta-query', $metaQuery, $query, $widget);
     }
 
