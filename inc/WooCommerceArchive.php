@@ -30,6 +30,8 @@ class WooCommerceArchive
 
         $args = query($args, $this->widget);
 
+        $args = apply_filters('iamntz/elementor/query/woo-query-arguments', $args, $attrs, $type, $this->widget);
+
         return $args;
     }
 }
